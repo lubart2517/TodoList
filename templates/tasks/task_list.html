@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Tasks List
+    <a href="{% url 'tasks:task-create' %}" class="btn btn-primary link-to-page">Create</a>
+  </h1>
+
+  {% if task_list %}
+    <table class="table">
+      <tbody>
+
+          {% for task in task_list %}
+            <tr>
+              <td class="p-3">
+                <div>
+                  <span class="font-weight-bold">{{ task.content }}</span> |
+                  {% if task.is_completed %} <span class="text-success">Done</span>{% else %} <span class="text-danger">Not done</span>{% endif %}
+                </div>
+
+                <form method="post" action="">
+                  {% csrf_token %}
+                  <input type="hidden" name="task_id" value="{{ task.id }}">
+                  {% if task.is_completed %}
+                    <input type="hidden" name="complete" value="False">
+                    <button type="submit" class="btn btn-warning">Undo</button>
+                  {% else %}
+                    <input type="hidden" name="complete" value="True">
+                    <button type="submit" class="btn btn-success">Complete</button>
+                  {% endif %}
+                </form>
+
+                <div>Created: {{ task.created_at|date:"Y-m-d H:i:s" }}</div>
+
+                <div ><span class="font-weight-bold">Tags</span>:
+                  {% for tag in task.tags.all %}
+                    {{ tag.name }}
+                  {% endfor %}
+                </div>
+
+                <div>
+                  <a href="{% url 'tasks:task-update' pk=task.id %}" class="btn btn-primary link-to-page">Update</a>
+                  <a href="{% url 'tasks:task-delete' pk=task.id %}" class="btn btn-primary link-to-page">Delete</a>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+
+      </tbody>
+    </table>
+  {% else %}
+    <p>There are no tasks yet.</p>
+  {% endif %}
+{% endblock %}
