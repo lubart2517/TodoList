@@ -28,9 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
-    SECRET_KEY = "".join(
-        random.choice(string.ascii_lowercase) for i in range(32)
-    )
+    SECRET_KEY = "".join(random.choice(string.ascii_lowercase) for i in range(32))
 
 
 # Quick-start development settings - unsuitable for production
@@ -56,7 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "crispy_forms",
     "crispy_bootstrap4",
-    "tasks"
+    "tasks",
 ]
 
 MIDDLEWARE = [
@@ -74,7 +72,7 @@ ROOT_URLCONF = "todo_list.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -140,7 +138,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
-
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
